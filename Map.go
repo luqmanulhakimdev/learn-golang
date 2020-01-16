@@ -1,7 +1,5 @@
 package main
-import(
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	month := map[string]int{}
