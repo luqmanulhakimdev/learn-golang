@@ -1,0 +1,5 @@
+Country:Austria;Capital:Vienna;Area (sq km):83859;Pop. (thousands):8075
+Country:Indonesia;Capital:Jakarta;Area (sq km):76345;Pop. (thousands):2343
+Country:China;Capital:Wuhan;Area (sq km):75634;Pop. (thousands):1233
+Country:Amerika;Capital:Washington;Area (sq km):23123;Pop. (thousands):4532
+Country:Malaysia;Capital:Kuala Lumpur;Area (sq km):78678;Pop. (thousands):9901
