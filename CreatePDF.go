@@ -28,6 +28,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = ConvertArrayTableToPDF("PDF/ArrayTableToPDF.pdf")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func ConvertFirstPDF(fileName string) error {
@@ -250,6 +255,67 @@ func ConvertHTMLTableToPDF(filename string) error {
 	basicTable()
 	pdf.AddPage()
 	improvedTable()
+	pdf.AddPage()
+	fancyTable()
+
+	return pdf.OutputFileAndClose(filename)
+}
+
+func ConvertArrayTableToPDF(filename string) error {
+	pdf := gofpdf.New("P", "mm", "A4", "")
+
+	header := []string{"Id", "Title", "Tag", "Date"}
+	blogs := []map[string]string{
+		{"Id":"1", "Title":"backend programmer", "Tag":"php, golang, nodejs", "Date":"2020-01-27 10:12:44"},
+		{"Id":"2", "Title":"frontend programmer", "Tag":"javascript, css, jquery, Figma", "Date":"2020-01-26 12:23:23"},
+		{"Id":"3", "Title":"graphic designer", "Tag":"photoshop, ilustrator, coreldraw", "Date":"2020-01-25 15:05:27"},
+		{"Id":"4", "Title":"dev ops", "Tag":"jenkins, kubernates, docker, git", "Date":"2020-01-25 18:12:32"},
+	}
+
+	fancyTable := func() {
+	    // Colors, line width and bold font
+	    pdf.SetFillColor(243, 255, 74)
+	    pdf.SetTextColor(0, 0, 0)
+	    pdf.SetDrawColor(0, 0, 0)
+	    pdf.SetLineWidth(.3)
+	    pdf.SetFont("", "B", 0)
+	    
+	    // 	Header
+	    w := []float64{10, 50, 75, 50}
+	    wSum := 0.0
+	    for _, v := range w {
+	        wSum += v
+	    }
+
+	    left := (210 - wSum) / 2
+	    pdf.SetX(left)
+	    for j, str := range header {
+	        pdf.CellFormat(w[j], 7, str, "1", 0, "C", true, 0, "")
+	    }
+
+	    pdf.Ln(-1)
+	    // Color and font restoration
+	    pdf.SetFillColor(224, 235, 255)
+	    pdf.SetTextColor(0, 0, 0)
+	    pdf.SetFont("", "", 0)
+
+	    // 	Data
+	    fill := false
+	    for _, blog := range blogs {
+	        pdf.SetX(left)
+	        pdf.CellFormat(w[0], 6, blog["Id"], "LR", 0, "", fill, 0, "")
+	        pdf.CellFormat(w[1], 6, blog["Title"], "LR", 0, "", fill, 0, "")
+	        pdf.CellFormat(w[2], 6, blog["Tag"], "LR", 0, "", fill, 0, "")
+	        pdf.CellFormat(w[3], 6, blog["Date"], "LR", 0, "", fill, 0, "")
+	        pdf.Ln(-1)
+	        fill = !fill
+	    }
+
+	    pdf.SetX(left)
+	    pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
+	}
+
+	pdf.SetFont("Arial", "", 14)
 	pdf.AddPage()
 	fancyTable()
 
